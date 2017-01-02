@@ -1,17 +1,18 @@
-defmodule Todo.Database do
+defmodule Todo.DatabaseWorker do
   use GenServer
 
   def start(db_folder) do
-    GenServer.start(__MODULE__, db_folder, name: :database_server)
+    GenServer.start(__MODULE__, db_folder)
   end
 
-  def store(key, data) do
-    GenServer.cast(:database_server, {:store, key, data})
+  def store(pid, key, data) do
+    GenServer.cast(pid, {:store, key, data})
   end
 
-  def get(key) do
-    GenServer.call(:database_server, {:get, key})
+  def get(pid, key) do
+    GenServer.call(pid, {:get, key})
   end
+
 
   def init(db_folder) do
     File.mkdir_p(db_folder)
@@ -35,4 +36,5 @@ defmodule Todo.Database do
   end
 
   defp file_name(db_folder, key), do: "#{db_folder}/#{key}"
+  
 end
