@@ -1,8 +1,9 @@
 defmodule Todo.Server do
   use GenServer
 
-  def start(list_name) do
-    GenServer.start(Todo.Server, list_name)
+  def start_link(list_name) do
+    IO.puts "Starting todo server for #{list_name}."
+    GenServer.start_link(Todo.Server, list_name)
   end
 
   def add_entry(todo_server, entry) do
